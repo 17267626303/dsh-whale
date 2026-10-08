@@ -85,4 +85,4 @@ Electron 打包产物在 `dist/FatWhaleCompanion-win32-x64/`，需要保留整�
 
 ## 参考
 
-鲸鱼娘角色由 ZipZipPipe 设计，PNG 动画素材来自 vlln/whale-girl，保留上游许可与署名；详见 THIRD_PARTY_NOTICES.md。插件代码 MIT 许可。非官方 DSH 插件。
+插件代码 MIT 许可。非官方 DSH 插件。
