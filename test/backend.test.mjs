@@ -276,6 +276,30 @@ test('authentic sprite sheets are PNGs served only through their exact allowlist
   assert.equal((await head.arrayBuffer()).byteLength, 0);
 });
 
+test('portrait PNGs return matching GET and HEAD metadata while unknown paths stay inaccessible', async t => {
+  const h = await host(t);
+  for (const portrait of ['maid-short', 'maid-long', 'evening']) {
+    const path = `/portraits/${portrait}.png`;
+    const response = await h.request(path);
+    assert.equal(response.status, 200, portrait);
+    assert.equal(response.headers.get('Content-Type'), 'image/png');
+    assert.equal(response.headers.get('X-Content-Type-Options'), 'nosniff');
+    const bytes = new Uint8Array(await response.arrayBuffer());
+    assert.deepEqual([...bytes.slice(0, 8)], [137, 80, 78, 71, 13, 10, 26, 10]);
+    assert.equal(Number(response.headers.get('Content-Length')), bytes.byteLength);
+    const head = await h.request(path, { method: 'HEAD' });
+    assert.equal(head.status, 200, portrait);
+    assert.equal(head.headers.get('Content-Type'), 'image/png');
+    assert.equal(Number(head.headers.get('Content-Length')), bytes.byteLength);
+    assert.equal((await head.arrayBuffer()).byteLength, 0);
+    assert.equal((await h.request(path, { method: 'POST' })).status, 405);
+  }
+  assert.equal((await h.request('/portraits/unknown.png')).status, 404);
+  assert.equal((await h.request('/portraits/maid-short.png/extra')).status, 404);
+  assert.equal((await h.request('/portraits/LICENSE')).status, 404);
+  assert.equal((await h.request('/portraits/maid-short.png', { headers: { Origin: 'https://untrusted.example' } })).status, 403);
+});
+
 test('corrupt state is preserved and startup fails without overwriting it', async t => {
   const dataDir = await mkdtemp(join(tmpdir(), 'dsh-whale-corrupt-'));
   t.after(() => rm(dataDir, { recursive: true, force: true }));
@@ -293,8 +317,9 @@ test('Cordis entry point returns a disposer effect rather than a controller obje
     webServer: { port: 5555, register: route => { routes.set(route.path, route); return () => routes.delete(route.path); } },
   }, { dataDir });
   assert.equal(typeof dispose, 'function');
-  assert.equal(routes.size, 16);
+  assert.equal(routes.size, 19);
   assert.ok(routes.has('/whale-companion/sprites/idle.png'));
+  assert.ok(routes.has('/whale-companion/portraits/maid-short.png'));
   await dispose();
   assert.equal(routes.size, 0);
 });

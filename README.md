@@ -1,6 +1,6 @@
 # 大肥鱼 · DeepSeek Harness 桌宠
 
-第一版只有四件事：**拖动、喂食、摸头、跟随任务状态做出反应**。
+支持 **拖动、喂食、摸头、跟随任务状态做出反应**，并可自由切换四种形象。
 
 ![大肥鱼桌宠预览](artifacts/fatfish-idle-preview.png)
 
@@ -8,9 +8,9 @@
 
 ## 安装和启动（Windows x64）
 
-1. 从 [v0.1.1 Release](https://github.com/DawnVerge/dsh-whale/releases/tag/v0.1.1) 下载 `fatfish-desktop-windows-x64.zip` 并解压，保留整个文件夹。
+1. 从 [v0.2.0 Release](https://github.com/DawnVerge/dsh-whale/releases/tag/v0.2.0) 下载 `fatfish-desktop-windows-x64.zip` 并解压，保留整个文件夹。
 2. 打开 **DeepSeek Harness 桌面客户端 → 设置 → 插件 → 添加插件**。
-3. 在“包名或地址”中填入解压文件夹内 `dsh-whale-companion-0.1.1.tgz` 的完整路径。旧版用户先在插件管理中卸载同名插件，再导入新版；计数会保留。
+3. 在“包名或地址”中填入解压文件夹内 `dsh-whale-companion-0.2.0.tgz` 的完整路径。旧版用户先在插件管理中卸载同名插件，再导入新版；计数会保留。
 4. 安装后点击 **立即启用**。如客户端提示需要重启，退出并重新打开 DSH。
 5. 双击同一文件夹内的 **WhaleCompanion.exe**。
 
@@ -19,6 +19,12 @@
 仅安装插件、不启动独立小窗时，会在 DSH 界面内显示大肥鱼。退出桌宠可用角色菜单或系统托盘右键菜单；关闭 DSH 后桌宠仍可拖动、喂食、摸头，任务联动将在 DSH 启动后自动恢复。
 
 ## 怎么玩
+
+点击互动栏的 **··· → 切换形象**，选择 **大肥鱼、短裙女仆、长裙女仆、黑金礼服**。切换立即生效；当前客户端会记住选择，重新打开时自动恢复。
+
+![四种形象切换菜单](artifacts/appearances-preview/appearance-picker.png)
+
+原大肥鱼使用多帧角色动画；新增三套使用透明立绘，配合呼吸、摇摆、庆祝跳跃、喂食和爱心特效回应互动与任务状态。所有形象均支持相同的拖动、喂食和摸头操作。
 
 | 操作 | 效果 |
 | --- | --- |

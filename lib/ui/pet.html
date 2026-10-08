@@ -8,21 +8,32 @@
   <link rel="stylesheet" href="pet.css">
 </head>
 <body>
-  <main id="companion" class="companion" data-state="idle" aria-label="大肥鱼桌面宠物">
+  <main id="companion" class="companion" data-state="idle" data-appearance="chibi" aria-label="大肥鱼桌面宠物">
     <div id="bubble" class="bubble" role="status" aria-live="polite">今天也一起加油吧。</div>
     <div id="sparkles" class="sparkles" aria-hidden="true"><i>✦</i><i>♡</i><i>✧</i><i>♡</i><i>✦</i></div>
     <button id="character" class="character" aria-label="大肥鱼，拖动可移动，长按摸头，右键打开菜单" title="拖动移动 · 长按摸头 · 右键菜单">
-      <span class="pet-art sprite-art" aria-hidden="true"></span>
+      <span id="spriteArt" class="pet-art sprite-art" aria-hidden="true"></span>
+      <img id="portraitArt" class="pet-art portrait-art" alt="" draggable="false" hidden>
+      <span class="portrait-effect" aria-hidden="true"><span class="portrait-snack">🍚</span><span class="portrait-heart">♥</span></span>
     </button>
     <div class="nameplate"><span id="statusDot" class="status-dot"></span><span id="status">大肥鱼在陪你</span></div>
     <nav class="actions" aria-label="桌宠互动">
       <button id="feed" class="action"><span aria-hidden="true">🍚</span>喂食</button>
       <button id="pet" class="action"><span aria-hidden="true">♡</span>摸头</button>
-      <button id="more" class="action more" aria-label="更多操作">···</button>
+      <button id="more" class="action more" aria-label="更多操作" aria-expanded="false" aria-controls="menu">···</button>
     </nav>
     <div id="menu" class="menu" hidden>
       <span class="menu-title">大肥鱼 · 你的桌面伙伴</span>
       <p id="connection" class="connection">正在连接 DSH…</p>
+      <span id="appearanceTitle" class="appearance-title">切换形象</span>
+      <div id="appearancePicker" class="appearance-picker" role="group" aria-labelledby="appearanceTitle" aria-describedby="appearanceNote">
+        <button type="button" class="appearance-choice" data-appearance="chibi" aria-pressed="true"><span class="appearance-thumb" aria-hidden="true"></span><span>动画大肥鱼</span></button>
+        <button type="button" class="appearance-choice" data-appearance="maid-short" aria-pressed="false"><span class="appearance-thumb" aria-hidden="true"></span><span>短裙女仆</span></button>
+        <button type="button" class="appearance-choice" data-appearance="maid-long" aria-pressed="false"><span class="appearance-thumb" aria-hidden="true"></span><span>长裙女仆</span></button>
+        <button type="button" class="appearance-choice" data-appearance="evening" aria-pressed="false"><span class="appearance-thumb" aria-hidden="true"></span><span>黑金礼服</span></button>
+      </div>
+      <p id="appearanceNote" class="appearance-note">动画大肥鱼 · 多帧动画</p>
+      <p id="appearanceFeedback" class="appearance-feedback" role="status" aria-live="polite" hidden></p>
       <button id="openClient" hidden>打开插件页面 ↗</button>
       <button id="resetPosition">回到右下角</button>
       <button id="hidePet">收起桌宠</button>

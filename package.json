@@ -1,6 +1,6 @@
 {
   "name": "dsh-whale-companion",
-  "version": "0.1.1",
+  "version": "0.2.0",
   "description": "DeepSeek Harness 桌宠：拖动、喂食、摸头和任务状态动画",
   "type": "module",
   "main": "lib/index.mjs",
@@ -10,7 +10,7 @@
     "./cordis.patch.yml": "./cordis.patch.yml",
     "./package.json": "./package.json"
   },
-  "files": ["lib", "artifacts/fatfish-idle-preview.png", "cordis.patch.yml", "README.md", "LICENSE", "THIRD_PARTY_NOTICES.md"],
+  "files": ["lib", "artifacts/fatfish-idle-preview.png", "artifacts/appearances-preview/appearance-picker.png", "cordis.patch.yml", "README.md", "LICENSE", "THIRD_PARTY_NOTICES.md"],
   "repository": { "type": "git", "url": "git+https://github.com/DawnVerge/dsh-whale.git" },
   "homepage": "https://github.com/DawnVerge/dsh-whale#readme",
   "bugs": { "url": "https://github.com/DawnVerge/dsh-whale/issues" },

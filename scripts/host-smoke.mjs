@@ -92,6 +92,7 @@ try {
     '/whale-companion/pet.css', '/whale-companion/pet.html',
     '/whale-companion/pet.js', '/whale-companion/presence',
     ...['idle','think','working','wait','celebrate','error','eat','joy','drag'].map(state => `/whale-companion/sprites/${state}.png`),
+    ...['maid-short','maid-long','evening'].map(portrait => `/whale-companion/portraits/${portrait}.png`),
     '/whale-companion/state',
   ].sort());
   const connection = JSON.parse(await readFile(join(temporary, 'connection.json'), 'utf8'));

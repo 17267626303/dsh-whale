@@ -3,6 +3,7 @@ import { spawnSync } from 'node:child_process';
 const manifest=JSON.parse(await readFile(new URL('../package.json',import.meta.url),'utf8'));
 for(const file of [manifest.main,manifest.exports['./client'],manifest.dsh.bundle.patch,'lib/ui/pet.html','lib/ui/pet.js','lib/ui/pet.css'])await stat(new URL(`../${file}`,import.meta.url));
 for(const state of ['idle','think','working','wait','celebrate','error','eat','joy','drag'])await stat(new URL(`../lib/ui/sprites/${state}.png`,import.meta.url));
+for(const portrait of ['maid-short','maid-long','evening'])await stat(new URL(`../lib/ui/portraits/${portrait}.png`,import.meta.url));
 for(const file of ['lib/index.mjs','lib/pet-core.mjs','lib/client.js','lib/ui/pet.js','desktop/main.cjs','desktop/preload.cjs','desktop/config.cjs','scripts/preview.mjs']){
   const result=spawnSync(process.execPath,['--check',new URL(`../${file}`,import.meta.url).pathname.replace(/^\/(\w:)/,'$1')],{encoding:'utf8',windowsHide:true});
   if(result.status!==0)throw new Error(`${file}: ${result.stderr||result.error}`);

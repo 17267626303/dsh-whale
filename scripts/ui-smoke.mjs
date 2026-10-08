@@ -1,5 +1,6 @@
 // Real Electron smoke test, using Chromium's local DevTools protocol.
 import assert from 'node:assert/strict';
+import { runAppearanceChecks } from './appearance-smoke.mjs';
 import { spawn } from 'node:child_process';
 import { writeFile, mkdir } from 'node:fs/promises';
 import { createRequire } from 'node:module';
@@ -29,6 +30,7 @@ try{
   await eventually(()=>evaluate("document.getElementById('connection')?.textContent.includes('已连接')"),'connection');
   assert.equal(await evaluate('window.whaleDesktop.isDesktop'),true);
   assert.equal(await evaluate("document.querySelector('#character svg')===null"),true);
+  await runAppearanceChecks({command,evaluate,eventually,delay,firstOnly:process.argv.includes('--first-portrait')});
   assert.ok((await evaluate("getComputedStyle(document.querySelector('.sprite-art')).backgroundImage")).includes('sprites/idle.png'));
   const before=await fetch('http://127.0.0.1:4318/whale-companion/state').then(r=>r.json());
   await evaluate("document.getElementById('feed').click()");
@@ -50,11 +52,13 @@ try{
     await fetch('http://127.0.0.1:4318/demo',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({state})});
     await eventually(()=>evaluate(`document.getElementById('companion').dataset.state===${JSON.stringify(state)}`),state);
     const imageState={thinking:'think',working:'working',waiting:'wait',celebrate:'celebrate',error:'error'}[state];
-    assert.ok((await evaluate("getComputedStyle(document.querySelector('.sprite-art')).backgroundImage")).includes(`sprites/${imageState}.png`));
+  assert.ok((await evaluate("getComputedStyle(document.querySelector('.sprite-art')).backgroundImage")).includes(`sprites/${imageState}.png`));
   }
   await fetch('http://127.0.0.1:4318/demo',{method:'POST',headers:{'Content-Type':'application/json'},body:'{"state":"idle"}'});
   await eventually(()=>evaluate("document.getElementById('companion').dataset.state==='idle'"),'idle');
   const oldX=await evaluate('window.screenX');
+  await command('Input.dispatchMouseEvent',{type:'mouseMoved',x:160,y:155});
+  await delay(120);
   await command('Input.dispatchMouseEvent',{type:'mousePressed',x:160,y:155,button:'left',clickCount:1});
   await command('Input.dispatchMouseEvent',{type:'mouseMoved',x:142,y:155,button:'left',buttons:1});
   await delay(200);
@@ -64,13 +68,13 @@ try{
   await evaluate(`window.whaleDesktop.moveBy(${oldX-movedX},0)`);
   // Confirm API stays limited to pet operations.
   assert.equal(await evaluate("window.whaleDesktop.request('/not-allowed').then(()=>false,()=>true)"),true);
-  await mkdir(new URL('../artifacts/',import.meta.url),{recursive:true});
+  await mkdir(new URL('../artifacts/appearances-preview/',import.meta.url),{recursive:true});
   await evaluate("document.getElementById('feed').click()");await delay(350);
   const captured=await command('Page.captureScreenshot',{format:'png',captureBeyondViewport:false});
-  await writeFile(new URL('../artifacts/fatfish-desktop-preview.png',import.meta.url),Buffer.from(captured.data,'base64'));
+  await writeFile(new URL('../artifacts/appearances-preview/chibi-feed.png',import.meta.url),Buffer.from(captured.data,'base64'));
   await delay(3000);
   const idleCapture=await command('Page.captureScreenshot',{format:'png',captureBeyondViewport:false});
-  await writeFile(new URL('../artifacts/fatfish-idle-preview.png',import.meta.url),Buffer.from(idleCapture.data,'base64'));
+  await writeFile(new URL('../artifacts/appearances-preview/chibi-idle.png',import.meta.url),Buffer.from(idleCapture.data,'base64'));
   console.log('Electron integration OK: connected, feed, head pet, 5 task states, drag IPC, API boundary, screenshot.');
   await evaluate('window.whaleDesktop.close()');
 }finally{
