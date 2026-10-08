@@ -8,7 +8,7 @@
 
 ## 安装和启动（Windows x64）
 
-1. 从 [v0.1.1 Release](https://github.com/17267626303/dsh-whale/releases/tag/v0.1.1) 下载 `fatfish-desktop-windows-x64.zip` 并解压，保留整个文件夹。
+1. 从 [v0.1.1 Release](https://github.com/DawnVerge/dsh-whale/releases/tag/v0.1.1) 下载 `fatfish-desktop-windows-x64.zip` 并解压，保留整个文件夹。
 2. 打开 **DeepSeek Harness 桌面客户端 → 设置 → 插件 → 添加插件**。
 3. 在“包名或地址”中填入解压文件夹内 `dsh-whale-companion-0.1.1.tgz` 的完整路径。旧版用户先在插件管理中卸载同名插件，再导入新版；计数会保留。
 4. 安装后点击 **立即启用**。如客户端提示需要重启，退出并重新打开 DSH。

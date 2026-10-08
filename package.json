@@ -11,9 +11,9 @@
     "./package.json": "./package.json"
   },
   "files": ["lib", "artifacts/fatfish-idle-preview.png", "cordis.patch.yml", "README.md", "LICENSE", "THIRD_PARTY_NOTICES.md"],
-  "repository": { "type": "git", "url": "git+https://github.com/17267626303/dsh-whale.git" },
-  "homepage": "https://github.com/17267626303/dsh-whale#readme",
-  "bugs": { "url": "https://github.com/17267626303/dsh-whale/issues" },
+  "repository": { "type": "git", "url": "git+https://github.com/DawnVerge/dsh-whale.git" },
+  "homepage": "https://github.com/DawnVerge/dsh-whale#readme",
+  "bugs": { "url": "https://github.com/DawnVerge/dsh-whale/issues" },
   "dsh": {
     "bundle": { "patch": "./cordis.patch.yml" },
     "client": { "platform": "web" }
