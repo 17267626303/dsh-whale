@@ -4,7 +4,7 @@
 
 ![大肥鱼桌宠预览](artifacts/fatfish-idle-preview.png)
 
-使用参考项目 `vlln/whale-girl` 中的鲸鱼娘动画素材：蓝色长发、黑白女仆装、白色围裙和鲸鱼尾巴。本地动画，不需要 API Key，也不会额外调用模型；来源与署名见 `THIRD_PARTY_NOTICES.md`。
+本地动画，不需要 API Key，也不会额外调用模型。
 
 ## 安装和启动（Windows x64）
 
@@ -85,4 +85,4 @@ Electron 打包产物在 `dist/FatWhaleCompanion-win32-x64/`，需要保留整�
 
 ## 参考
 
-功能和接口研究参考：[vlln/whale-girl](https://github.com/vlln/whale-girl)、[aceice01/dsh-whale-pet](https://github.com/aceice01/dsh-whale-pet)、[yanzwzz/dsh-whale-girl-pet](https://github.com/yanzwzz/dsh-whale-girl-pet)。鲸鱼娘角色由 ZipZipPipe 设计，PNG 动画素材来自 vlln/whale-girl，保留上游许可与署名；详见 THIRD_PARTY_NOTICES.md。插件代码 MIT 许可。非官方 DSH 插件。
+鲸鱼娘角色由 ZipZipPipe 设计，PNG 动画素材来自 vlln/whale-girl，保留上游许可与署名；详见 THIRD_PARTY_NOTICES.md。插件代码 MIT 许可。非官方 DSH 插件。
