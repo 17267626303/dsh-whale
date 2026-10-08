@@ -1,0 +1,91 @@
+:root{font-family:"Microsoft YaHei UI","Segoe UI",sans-serif;color:#365c7e;color-scheme:light;font-synthesis:none}
+*{box-sizing:border-box}
+html,body{margin:0;width:100%;height:100%;overflow:hidden;background:transparent;user-select:none}
+button{font:inherit;color:inherit;cursor:pointer;-webkit-tap-highlight-color:transparent}
+button:focus-visible{outline:2px solid #489cdb;outline-offset:4px}
+button:disabled{opacity:.55;cursor:wait}
+[hidden]{display:none!important}
+.companion{position:absolute;width:284px;height:386px;right:20px;bottom:16px;display:flex;flex-direction:column;align-items:center;isolation:isolate}
+.bubble{position:absolute;top:3px;left:13px;right:13px;min-height:42px;display:flex;align-items:center;justify-content:center;padding:10px 17px;border:1px solid #daebf4;border-radius:16px;background:rgba(255,255,255,.96);box-shadow:0 5px 20px #365f8820;font-size:12px;line-height:1.65;text-align:center;transition:opacity .3s,transform .3s;z-index:4;pointer-events:none}
+.bubble:after{content:"";position:absolute;bottom:-5px;left:calc(50% - 5px);width:9px;height:9px;background:#fff;border-right:1px solid #daebf4;border-bottom:1px solid #daebf4;transform:rotate(45deg)}
+.bubble.quiet{opacity:0;transform:translateY(5px)}
+.character{position:absolute;top:50px;left:12px;width:260px;height:260px;padding:0;background:none;border:0;touch-action:none;cursor:grab}
+.character:active{cursor:grabbing}
+.pet-art{display:block;width:100%;height:100%;pointer-events:none}
+.sprite-art{background-image:url("sprites/idle.png");background-repeat:no-repeat;background-size:300% 100%;background-position:var(--sprite-x,0%) 0;transform-origin:50% 82%;animation:breathe 3.6s ease-in-out infinite;filter:drop-shadow(0 5px 4px #203b721f);will-change:transform}
+.nameplate{position:absolute;top:314px;display:flex;gap:7px;align-items:center;font-size:11px;letter-spacing:.4px;padding:6px 11px;border-radius:20px;background:#ffffffd6;box-shadow:0 2px 12px #2b659313;pointer-events:none}
+.status-dot{width:5px;height:5px;border-radius:100%;background:#79b999}
+.actions{position:absolute;bottom:0;display:flex;gap:6px;background:#ffffffeb;padding:5px;border:1px solid #dfedf4;border-radius:20px;box-shadow:0 5px 18px #254d771c;backdrop-filter:blur(10px)}
+.action{height:30px;border:0;border-radius:15px;background:transparent;display:flex;align-items:center;justify-content:center;gap:6px;padding:0 13px;font-size:12px;transition:background .15s,transform .15s}
+.action:hover{background:#eaf5fc}
+.action:active{transform:scale(.94)}
+.action span{font-size:17px}
+.action.more{font-size:20px;padding:0 10px;letter-spacing:1px}
+.sparkles{position:absolute;inset:40px 15px 90px;pointer-events:none;z-index:3;overflow:visible}
+.sparkles i{position:absolute;font-style:normal;opacity:0;color:#e99eae;font-size:22px;left:15%;top:60%}
+.sparkles i:nth-child(2){left:78%;top:52%;animation-delay:.13s!important}
+.sparkles i:nth-child(3){left:5%;top:35%;color:#eac376;animation-delay:.27s!important}
+.sparkles i:nth-child(4){left:84%;top:18%;animation-delay:.4s!important}
+.sparkles i:nth-child(5){left:50%;top:9%;color:#85c3ec;animation-delay:.18s!important}
+.menu{position:absolute;right:16px;bottom:42px;min-width:240px;padding:16px;border:1px solid #dfedf4;border-radius:18px;background:#fffffff7;box-shadow:0 12px 30px #254d7729;z-index:8;font-size:12px;backdrop-filter:blur(18px)}
+.menu-title{font-size:13px;font-weight:600}
+.connection{color:#7992a6;line-height:1.7;margin:7px 0 11px;font-size:11px}
+.menu button{display:block;width:100%;text-align:left;padding:8px 9px;border:0;background:transparent;border-radius:9px;font-size:12px}
+.menu button:hover{background:#eff6fb}
+.menu small{display:block;margin-top:9px;color:#92a4b3;font-size:10px}
+.restore{position:fixed;bottom:16px;right:20px;width:44px;height:44px;border-radius:50%;border:1px solid #cfe7f3;background:#fffffff5;box-shadow:0 4px 15px #2b659322;font-size:23px}
+.companion[data-state=thinking] .sprite-art{background-image:url("sprites/think.png");background-size:100% 100%;animation:ponder 2.6s ease-in-out infinite}
+.companion[data-state=working] .sprite-art{background-image:url("sprites/working.png");background-size:300% 100%;animation:working .9s ease-in-out infinite}
+.companion[data-state=waiting] .sprite-art{background-image:url("sprites/wait.png");background-size:100% 100%;animation:waiting 3s ease-in-out infinite}
+.companion[data-state=celebrate] .sprite-art{background-image:url("sprites/celebrate.png");background-size:300% 100%;animation:bounce .75s ease-in-out infinite}
+.companion[data-state=joy] .sprite-art{background-image:url("sprites/joy.png");background-size:200% 100%;animation:bounce 1s ease-in-out infinite}
+.companion[data-state=error] .sprite-art{background-image:url("sprites/error.png");background-size:200% 100%;animation:droop 3s ease-in-out infinite}
+.companion[data-state=eat] .sprite-art{background-image:url("sprites/eat.png");background-size:300% 100%;animation:nom .6s ease-in-out infinite}
+.companion[data-state=pet] .sprite-art{background-image:url("sprites/joy.png");background-size:200% 100%;animation:nuzzle .85s ease-in-out infinite}
+.companion[data-state=drag] .sprite-art{background-image:url("sprites/drag.png");background-size:100% 100%;animation:dangle .7s ease-in-out infinite;transform-origin:50% 18%}
+.companion[data-state=celebrate] .sparkles i,.companion[data-state=joy] .sparkles i,.companion[data-state=pet] .sparkles i{animation:sparkle 1.6s ease-out infinite}
+.companion[data-state=thinking] .status-dot,.companion[data-state=working] .status-dot{background:#77b4e1;animation:dot 1.4s infinite}
+.companion[data-state=waiting] .status-dot{background:#e4bc6b}
+.companion[data-state=error] .status-dot{background:#df9cad}
+.companion[data-state=celebrate] .status-dot{background:#86b89c}
+.companion[data-state=drag] .bubble{opacity:0}
+.desktop .companion{right:calc(50% - 142px);bottom:16px}
+.desktop .restore{right:calc(50% - 22px)}
+@keyframes breathe{0%,100%{transform:translateY(0) scale(1)}
+50%{transform:translateY(-4px) scale(1.012)}
+}
+@keyframes ponder{0%,100%{transform:rotate(-3deg) translateY(0)}
+50%{transform:rotate(1deg) translateY(-4px)}
+}
+@keyframes working{0%,100%{transform:translateY(0) rotate(-1deg)}
+50%{transform:translateY(-4px) rotate(2deg)}
+}
+@keyframes waiting{0%,100%{transform:translateY(0) rotate(-1deg)}
+50%{transform:translateY(-4px) rotate(1deg)}
+}
+@keyframes bounce{0%,100%{transform:translateY(0) rotate(-2deg)}
+50%{transform:translateY(-13px) rotate(2deg)}
+}
+@keyframes droop{0%,100%{transform:rotate(3deg) translateY(3px)}
+50%{transform:rotate(1deg) translateY(6px)}
+}
+@keyframes nom{0%,100%{transform:rotate(-1deg) scale(1)}
+50%{transform:rotate(1deg) translateY(-3px) scale(1.018,.99)}
+}
+@keyframes nuzzle{0%,100%{transform:rotate(-5deg) translateY(2px)}
+50%{transform:rotate(4deg) translateY(-2px)}
+}
+@keyframes dangle{0%,100%{transform:rotate(-7deg) translateY(1px)}
+50%{transform:rotate(7deg) translateY(3px)}
+}
+@keyframes dot{0%,100%{opacity:.45}
+50%{opacity:1}
+}
+@keyframes sparkle{0%{transform:translateY(12px) scale(.4);opacity:0}
+25%{opacity:.9}
+100%{transform:translateY(-35px) scale(1.1);opacity:0}
+}
+@media(prefers-reduced-motion:reduce){*,*:before,*:after{animation:none!important;transition:none!important}
+}
+@media(max-width:300px){.companion{right:8px}
+}

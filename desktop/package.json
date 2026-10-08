@@ -1,0 +1,15 @@
+{
+  "name": "dsh-whale-desktop",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Transparent desktop companion for the DSH whale pet plugin",
+  "main": "main.cjs",
+  "scripts": {
+    "start": "electron .",
+    "test": "node --test test/*.test.cjs",
+    "pack": "node pack.cjs"
+  },
+  "devDependencies": {
+    "electron": "44.5.0"
+  }
+}

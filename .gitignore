@@ -1,0 +1,14 @@
+node_modules/
+desktop/node_modules/
+dist/
+*.tgz
+*.log
+.preview-data/
+artifacts/reference-probe/
+artifacts/desktop-preview.png
+.cache/
+.env
+.env.*
+!.env.example
+Thumbs.db
+.DS_Store
