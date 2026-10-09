@@ -6,7 +6,7 @@ const path = require('node:path');
 const http = require('node:http');
 const https = require('node:https');
 const { fileURLToPath } = require('node:url');
-const { argumentsFrom, serverOrigin, validateRequest, clampBounds } = require('./config.cjs');
+const { argumentsFrom, serverOrigin, validateRequest, clampBounds, TOP_UP_URL } = require('./config.cjs');
 const whaleIcon = require('./icon.cjs');
 
 const options = argumentsFrom(process.argv.slice(1));
@@ -23,7 +23,7 @@ function transport(origin, request) {
     const socket = (url.protocol === 'https:' ? https : http).request(url, {
       method: request.method,
       headers: { Accept: 'application/json', ...(payload ? { 'Content-Type': 'application/json', 'Content-Length': Buffer.byteLength(payload) } : {}) },
-      timeout: 2500,
+      timeout: request.route === '/billing/refresh' ? 15000 : 2500,
     }, response => {
       const chunks = []; let size = 0;
       response.on('data', chunk => {
@@ -155,6 +155,11 @@ ipcMain.on('whale:move', (event, dx, dy) => {
   win.setBounds(clampBounds(proposed, screen.getDisplayMatching(proposed).workArea));
 });
 ipcMain.on('whale:open-client', event => { if (trusted(event)) shell.openExternal(`${activeOrigin}/whale-companion/pet.html`).catch(() => {}); });
+ipcMain.handle('whale:open-top-up', async (event, ...args) => {
+  if (!trusted(event) || args.length !== 0) throw new Error('Unsupported top-up request');
+  await shell.openExternal(TOP_UP_URL);
+  return true;
+});
 ipcMain.on('whale:quit', event => { if (trusted(event)) app.quit(); });
 ipcMain.on('whale:menu', event => { if (trusted(event)) petMenu().popup({ window: win }); });
 ipcMain.on('whale:ignore-mouse', (event, ignore) => {

@@ -6,6 +6,7 @@ contextBridge.exposeInMainWorld('whaleDesktop', Object.freeze({
   request: (route, body) => ipcRenderer.invoke('whale:request', route, body),
   moveBy: (dx, dy) => ipcRenderer.send('whale:move', dx, dy),
   openClient: () => ipcRenderer.send('whale:open-client'),
+  openTopUp: () => ipcRenderer.invoke('whale:open-top-up'),
   close: () => ipcRenderer.send('whale:quit'),
   contextMenu: () => ipcRenderer.send('whale:menu'),
   setIgnoreMouseEvents: ignore => ipcRenderer.send('whale:ignore-mouse', ignore),

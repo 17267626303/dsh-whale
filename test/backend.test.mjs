@@ -95,7 +95,7 @@ test('desktop presence is a lease and does not survive a crash indefinitely', ()
   assert.equal(core.snapshot().presence.desktop, false);
 });
 
-async function host(t, { dataDir, now, modernJobs = false } = {}) {
+async function host(t, { dataDir, now, modernJobs = false, services = {}, billingFetch } = {}) {
   const ownedDirectory = !dataDir;
   dataDir ??= await mkdtemp(join(tmpdir(), 'dsh-whale-test-'));
   const routes = new Map();
@@ -113,6 +113,7 @@ async function host(t, { dataDir, now, modernJobs = false } = {}) {
   await once(server, 'listening');
   const port = server.address().port;
   const ctx = {
+    get: name => services[name],
     webServer: {
       port,
       register({ kind, path, handler }) {
@@ -140,7 +141,7 @@ async function host(t, { dataDir, now, modernJobs = false } = {}) {
       return () => modernJobListeners.delete(listener);
     },
   };
-  const plugin = await apply(ctx, { dataDir, now });
+  const plugin = await apply(ctx, { dataDir, now, billingFetch });
   const origin = `http://127.0.0.1:${port}`;
   const request = (path, options = {}) => fetch(`${origin}/whale-companion${path}`, options);
   const post = (path, body, extra = {}) => request(path, {
@@ -242,6 +243,38 @@ test('HTTP rejects cross-origin, untrusted hosts, unsupported actions and oversi
   assert.deepEqual((await (await h.request('/state')).json()).pet, { name: '大肥鱼', feeds: 0, pets: 0 });
 });
 
+test('billing HTTP only refreshes the configured host account and never exposes credentials', async t => {
+  const key = 'fixture-only-never-a-real-key';
+  let queried = 0;
+  const h = await host(t, { services: {
+    agentDefaultModel: { currentSelection: () => ({ provider: 'deepseek-official', model: 'deepseek-flash' }) },
+    credentials: { resolve: async () => ({ value: key, source: 'test' }) },
+  }, billingFetch: async (url, options) => {
+    assert.equal(url, 'https://api.deepseek.com/user/balance');
+    assert.equal(options.headers.Authorization, `Bearer ${key}`);
+    queried++;
+    return new Response(JSON.stringify({ is_available: true, balance_infos: [
+      { currency: 'CNY', total_balance: '12.34', granted_balance: '0', topped_up_balance: '12.34' },
+    ] }));
+  } });
+  const reply = await h.post('/billing/refresh', {});
+  assert.equal(reply.status, 200);
+  const billing = await reply.json();
+  assert.equal(billing.balance.status, 'ready');
+  assert.equal(billing.balance.accounts[0].totalBalance, '12.34');
+  assert.ok(queried > 0);
+  assert.equal((await h.request('/billing/refresh')).status, 405);
+  assert.equal((await h.post('/billing/state', {})).status, 405);
+  assert.equal((await h.post('/billing/refresh', { apiKey: key })).status, 400);
+  assert.equal((await h.post('/billing/refresh', { url: 'https://untrusted.example' })).status, 400);
+  assert.equal((await h.post('/billing/refresh', [])).status, 400);
+  assert.equal((await h.post('/billing/refresh', {}, { headers: { 'Content-Type': 'application/json', Origin: 'https://untrusted.example' } })).status, 403);
+  const text = await (await h.request('/state')).text();
+  assert.ok(!text.includes(key));
+  assert.ok(!text.includes('Authorization'));
+  assert.deepEqual(JSON.parse(text).billing.balance.accounts, billing.balance.accounts);
+});
+
 test('SSE delivers real host session events and releases its listener on disconnect', async t => {
   const h = await host(t);
   const abort = new AbortController();
@@ -317,7 +350,7 @@ test('Cordis entry point returns a disposer effect rather than a controller obje
     webServer: { port: 5555, register: route => { routes.set(route.path, route); return () => routes.delete(route.path); } },
   }, { dataDir });
   assert.equal(typeof dispose, 'function');
-  assert.equal(routes.size, 19);
+  assert.equal(routes.size, 21);
   assert.ok(routes.has('/whale-companion/sprites/idle.png'));
   assert.ok(routes.has('/whale-companion/portraits/maid-short.png'));
   await dispose();

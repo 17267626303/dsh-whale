@@ -25,6 +25,11 @@
     <div id="menu" class="menu" hidden>
       <span class="menu-title">大肥鱼 · 你的桌面伙伴</span>
       <p id="connection" class="connection">正在连接 DSH…</p>
+      <div class="menu-tabs" role="tablist" aria-label="桌宠设置">
+        <button id="appearanceTab" type="button" role="tab" aria-selected="true" aria-controls="appearancePanel">形象</button>
+        <button id="billingTab" type="button" role="tab" aria-selected="false" aria-controls="billingPanel" tabindex="-1">余额与用量</button>
+      </div>
+      <section id="appearancePanel" role="tabpanel" aria-labelledby="appearanceTab">
       <span id="appearanceTitle" class="appearance-title">切换形象</span>
       <div id="appearancePicker" class="appearance-picker" role="group" aria-labelledby="appearanceTitle" aria-describedby="appearanceNote">
         <button type="button" class="appearance-choice" data-appearance="chibi" aria-pressed="true"><span class="appearance-thumb" aria-hidden="true"></span><span>动画大肥鱼</span></button>
@@ -34,10 +39,41 @@
       </div>
       <p id="appearanceNote" class="appearance-note">动画大肥鱼 · 多帧动画</p>
       <p id="appearanceFeedback" class="appearance-feedback" role="status" aria-live="polite" hidden></p>
-      <button id="openClient" hidden>打开插件页面 ↗</button>
-      <button id="resetPosition">回到右下角</button>
-      <button id="hidePet">收起桌宠</button>
+      <div class="menu-footer">
+        <button id="openClient" hidden>打开插件页面 ↗</button>
+        <button id="resetPosition">回到右下角</button>
+        <button id="hidePet">收起桌宠</button>
+      </div>
       <small>拖动移动 · 长按摸头</small>
+      </section>
+      <section id="billingPanel" role="tabpanel" aria-labelledby="billingTab" hidden>
+        <div class="billing-scroll">
+        <p id="billingUnavailable" class="billing-feedback">正在读取余额与用量…</p>
+        <div id="billingDetails" hidden>
+          <div class="billing-card balance-card">
+            <span class="billing-label">当前余额</span>
+            <div id="billingBalance" class="billing-value">暂不可用</div>
+            <p id="billingBalanceStatus" class="billing-meta"></p>
+          </div>
+          <div class="billing-daily">
+            <div class="billing-card"><span id="billingDate" class="billing-label">今日金额</span><div id="billingDailyCost" class="billing-amount">暂不可用</div></div>
+            <div class="billing-card"><span class="billing-label">今日 Token</span><div id="billingDailyTokens" class="billing-amount">暂不可用</div></div>
+          </div>
+          <div class="billing-card last-task-card">
+            <span id="billingLastTitle" class="billing-label">最近任务</span>
+            <div id="billingLastCost" class="billing-amount">暂无任务结算</div>
+            <p id="billingLastTokens" class="billing-meta"></p>
+            <p id="billingLastBalance" class="billing-meta"></p>
+          </div>
+          <p class="billing-scope">仅统计 DSH 已记录用量；估算金额以官方账单为准。</p>
+        </div>
+        <p id="billingFeedback" class="billing-feedback" role="status" aria-live="polite" hidden></p>
+        </div>
+        <div class="billing-actions">
+          <button id="refreshBalance" type="button" disabled>刷新余额</button>
+          <a id="topUp" href="https://platform.deepseek.com/top_up" target="_blank" rel="noopener noreferrer">官方充值 ↗</a>
+        </div>
+      </section>
     </div>
   </main>
   <button id="restore" class="restore" hidden aria-label="显示大肥鱼">🐋</button>

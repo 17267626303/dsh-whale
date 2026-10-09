@@ -1,6 +1,7 @@
 // Real Electron smoke test, using Chromium's local DevTools protocol.
 import assert from 'node:assert/strict';
 import { runAppearanceChecks } from './appearance-smoke.mjs';
+import { runBillingChecks } from './billing-smoke.mjs';
 import { spawn } from 'node:child_process';
 import { writeFile, mkdir } from 'node:fs/promises';
 import { createRequire } from 'node:module';
@@ -30,6 +31,7 @@ try{
   await eventually(()=>evaluate("document.getElementById('connection')?.textContent.includes('已连接')"),'connection');
   assert.equal(await evaluate('window.whaleDesktop.isDesktop'),true);
   assert.equal(await evaluate("document.querySelector('#character svg')===null"),true);
+  if(!process.argv.includes('--billing-only')) {
   await runAppearanceChecks({command,evaluate,eventually,delay,firstOnly:process.argv.includes('--first-portrait')});
   assert.ok((await evaluate("getComputedStyle(document.querySelector('.sprite-art')).backgroundImage")).includes('sprites/idle.png'));
   const before=await fetch('http://127.0.0.1:4318/whale-companion/state').then(r=>r.json());
@@ -76,6 +78,8 @@ try{
   const idleCapture=await command('Page.captureScreenshot',{format:'png',captureBeyondViewport:false});
   await writeFile(new URL('../artifacts/appearances-preview/chibi-idle.png',import.meta.url),Buffer.from(idleCapture.data,'base64'));
   console.log('Electron integration OK: connected, feed, head pet, 5 task states, drag IPC, API boundary, screenshot.');
+  }
+  await runBillingChecks({command,evaluate,eventually,delay,portable});
   await evaluate('window.whaleDesktop.close()');
 }finally{
   socket?.close();

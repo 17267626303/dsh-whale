@@ -6,7 +6,7 @@ button:focus-visible{outline:2px solid #489cdb;outline-offset:4px}
 button:disabled{opacity:.55;cursor:wait}
 [hidden]{display:none!important}
 .companion{position:absolute;width:284px;height:386px;right:20px;bottom:16px;display:flex;flex-direction:column;align-items:center;isolation:isolate}
-.bubble{position:absolute;top:3px;left:13px;right:13px;min-height:42px;display:flex;align-items:center;justify-content:center;padding:10px 17px;border:1px solid #daebf4;border-radius:16px;background:rgba(255,255,255,.96);box-shadow:0 5px 20px #365f8820;font-size:12px;line-height:1.65;text-align:center;transition:opacity .3s,transform .3s;z-index:4;pointer-events:none}
+.bubble{position:absolute;top:3px;left:13px;right:13px;min-height:42px;display:flex;align-items:center;justify-content:center;padding:10px 17px;border:1px solid #daebf4;border-radius:16px;background:rgba(255,255,255,.96);box-shadow:0 5px 20px #365f8820;font-size:12px;line-height:1.65;text-align:center;white-space:pre-line;transition:opacity .3s,transform .3s;z-index:4;pointer-events:none}
 .bubble:after{content:"";position:absolute;bottom:-5px;left:calc(50% - 5px);width:9px;height:9px;background:#fff;border-right:1px solid #daebf4;border-bottom:1px solid #daebf4;transform:rotate(45deg)}
 .bubble.quiet{opacity:0;transform:translateY(5px)}
 .character{position:absolute;top:50px;left:12px;width:260px;height:260px;padding:0;background:none;border:0;touch-action:none;cursor:grab}
@@ -41,11 +41,31 @@ button:disabled{opacity:.55;cursor:wait}
 .menu button{display:block;width:100%;text-align:left;padding:6px 8px;border:0;background:transparent;border-radius:9px;font-size:11px}
 .menu button:hover{background:#eff6fb}
 .menu small{display:block;margin-top:6px;color:#92a4b3;font-size:10px}
+.menu-tabs{display:flex;gap:3px;margin:0 0 8px;padding:3px;border-radius:11px;background:#edf3fa}
+.menu .menu-tabs button{width:50%;text-align:center;border-radius:8px;padding:5px 6px}
+.menu .menu-tabs button[aria-selected=true]{background:#fff;color:#315c90;box-shadow:0 1px 4px #34577e15;font-weight:600}
+.menu-footer{display:flex;gap:4px;margin-top:4px}
+.menu .menu-footer button{width:auto;flex:1;padding:5px 2px;text-align:center;font-size:10px}
+.billing-scroll{max-height:198px;overflow-y:auto;overscroll-behavior:contain;scrollbar-width:thin;padding-right:3px}
+.billing-card{padding:8px 9px;border:1px solid #dfeaf4;border-radius:11px;background:#f6f9fd;overflow-wrap:anywhere}
+.billing-label{display:block;margin-bottom:4px;font-size:10px;color:#7188a1}
+.billing-value{font-size:16px;font-weight:600;line-height:1.5;color:#315c90}
+.billing-amount{font-size:11px;line-height:1.55;white-space:pre-line}
+.billing-meta{margin:4px 0 0;font-size:10px;line-height:1.5;white-space:pre-line;color:#7188a1}
+.billing-daily{display:grid;grid-template-columns:1fr 1fr;gap:5px;margin:6px 0}
+.billing-daily .billing-card{min-width:0}
+.billing-daily .billing-amount{font-size:10px;font-variant-numeric:tabular-nums;word-break:keep-all}
+.billing-scope{margin:6px 1px;font-size:9px;line-height:1.5;color:#8396aa}
+.billing-feedback{margin:6px 0;font-size:10px;line-height:1.55;color:#a25d65;overflow-wrap:anywhere}
+.billing-actions{display:flex;gap:6px;margin-top:7px}
+.menu .billing-actions button,.billing-actions a{display:flex;align-items:center;justify-content:center;flex:1;min-width:0;padding:7px 3px;border:1px solid #dce9f3;border-radius:9px;background:#eef5ff;color:#315c90;font-size:11px;text-decoration:none}
+.billing-actions a:hover{background:#e5effc}
+.billing-actions a:focus-visible{outline:2px solid #489cdb;outline-offset:2px}
 .appearance-title{display:block;margin-bottom:5px;font-size:11px;font-weight:600}
 .appearance-picker{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:5px}
 .menu .appearance-choice{display:flex;flex-direction:column;align-items:center;gap:2px;padding:4px;border:1px solid #dce9f3;background:#f3f7fc;text-align:center;line-height:1.4;font-size:10px}
 .menu .appearance-choice[aria-pressed=true]{border-color:#6f9ed5;background:#eaf2ff;box-shadow:inset 0 0 0 1px #6f9ed5;color:#315c90}
-.appearance-thumb{display:block;width:100%;height:50px;background-position:center;background-size:contain;background-repeat:no-repeat;pointer-events:none}
+.appearance-thumb{display:block;width:100%;height:44px;background-position:center;background-size:contain;background-repeat:no-repeat;pointer-events:none}
 .appearance-choice[data-appearance=chibi] .appearance-thumb{width:50px;background-image:url("sprites/idle.png");background-size:300% 100%;background-position:0 0}
 .appearance-choice[data-appearance=maid-short] .appearance-thumb{background-image:url("portraits/maid-short.png")}
 .appearance-choice[data-appearance=maid-long] .appearance-thumb{background-image:url("portraits/maid-long.png")}

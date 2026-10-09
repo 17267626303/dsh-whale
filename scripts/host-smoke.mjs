@@ -7,6 +7,7 @@ import { tmpdir } from 'node:os';
 import { delimiter, dirname, join, resolve } from 'node:path';
 import { pathToFileURL } from 'node:url';
 import * as plugin from '../lib/index.mjs';
+import { setTimeout as delay } from 'node:timers/promises';
 
 const require = createRequire(import.meta.url);
 const args = process.argv.slice(2);
@@ -69,6 +70,9 @@ ctx.provide('jobs', {
     },
   },
 });
+const fixtureKey = 'cordis-smoke-fixture-not-a-real-key';
+ctx.provide('agentDefaultModel', { currentSelection: () => ({ provider: 'deepseek-official', model: 'deepseek-flash' }) });
+ctx.provide('credentials', { resolve: async () => ({ value: fixtureKey, source: 'test' }) });
 
 async function snapshot() {
   let status;
@@ -86,8 +90,16 @@ async function snapshot() {
 
 let fiber;
 try {
-  fiber = await ctx.plugin(plugin, { dataDir: temporary });
+  fiber = await ctx.plugin(plugin, { dataDir: temporary, billingFetch: async (url, options) => {
+    assert.equal(url, 'https://api.deepseek.com/user/balance');
+    assert.equal(options.headers.Authorization, `Bearer ${fixtureKey}`);
+    return new Response(JSON.stringify({ is_available: true, balance_infos: [
+      { currency: 'CNY', total_balance: '42.50', granted_balance: '0', topped_up_balance: '42.50' },
+    ] }));
+  } });
   assert.deepEqual([...routes.keys()].sort(), [
+    '/whale-companion/billing/state',
+    '/whale-companion/billing/refresh',
     '/whale-companion/events', '/whale-companion/interact',
     '/whale-companion/pet.css', '/whale-companion/pet.html',
     '/whale-companion/pet.js', '/whale-companion/presence',
@@ -101,8 +113,23 @@ try {
   const session = { id: 'isolated-smoke-session' };
   ctx.emit('session/event', session, { type: 'turn/start', seq: 0, data: { turn: 1 } });
   assert.equal((await snapshot()).activity.name, 'thinking');
-  ctx.emit('session/event', session, { type: 'turn/end', seq: 1, data: { turn: 1, reason: { kind: 'completed' } } });
+  ctx.emit('session/event', session, { type: 'assistant/message', seq: 1, time: Date.now(), data: {
+    turn: 1, usage: { inputTokens: 1000, cacheReadTokens: 500, outputTokens: 200 },
+    message: { source: { kind: 'model', provider: 'deepseek-official', model: 'deepseek-flash' } },
+  } });
+  ctx.emit('session/event', session, { type: 'turn/end', seq: 2, data: { turn: 1, reason: { kind: 'completed' } } });
   assert.equal((await snapshot()).activity.name, 'celebrate');
+  let billing;
+  for (let attempt = 0; attempt < 50; attempt++) {
+    billing = (await snapshot()).billing;
+    if (billing.lastTask) break;
+    await delay(20);
+  }
+  assert.equal(billing.balance.status, 'ready');
+  assert.equal(billing.balance.accounts[0].totalBalance, '42.5');
+  assert.equal(billing.lastTask.totalTokens, 1700);
+  assert.equal(billing.lastTask.requests, 1);
+  assert.ok(!JSON.stringify(billing).includes(fixtureKey));
   assert.equal(jobListeners.size, 1, 'The optional modern jobs service must activate');
   for (const listener of jobListeners) listener({ type: 'registered', job: { id: 'smoke-job', startedAt: 1, status: 'running' } });
   assert.equal((await snapshot()).activity.name, 'working');

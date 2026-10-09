@@ -4,7 +4,8 @@ const assert = require('node:assert/strict');
 const fs = require('node:fs');
 const os = require('node:os');
 const path = require('node:path');
-const { argumentsFrom, loopbackOrigin, discoveryFiles, serverOrigin, validateRequest, clampBounds } = require('../config.cjs');
+const vm = require('node:vm');
+const { argumentsFrom, loopbackOrigin, discoveryFiles, serverOrigin, validateRequest, clampBounds, TOP_UP_URL } = require('../config.cjs');
 
 test('restricts connection targets to HTTP(S) loopback without credentials', () => {
   for (const url of ['http://127.0.0.1:3456', 'https://localhost:99', 'http://[::1]:20']) assert.ok(loopbackOrigin(url));
@@ -33,6 +34,32 @@ test('does not expose arbitrary routes or mutation payloads to the renderer', ()
   for (const [route, body] of [['/settings', {}], ['/interact', { action: 'run' }], ['/interact', { action: 'pet', command: 'x' }], ['/state', {}], ['/presence', { desktop: 'yes' }]]) {
     assert.throws(() => validateRequest(route, body));
   }
+});
+test('billing refresh accepts only an empty object and balance state is read-only', () => {
+  assert.deepEqual(validateRequest('/billing/state'), { route:'/billing/state', method:'GET' });
+  assert.deepEqual(validateRequest('/whale-companion/billing/refresh',{}), { route:'/billing/refresh', method:'POST', body:{} });
+  for (const body of [undefined,null,[],new Date(),'',{apiKey:'must-not-pass'},{url:'https://example.com'},{refresh:true}]) {
+    assert.throws(() => validateRequest('/billing/refresh',body));
+  }
+  assert.throws(() => validateRequest('/billing/state',{}));
+  assert.throws(() => validateRequest('/billing/refresh?url=https://example.com',{}));
+});
+test('top-up bridge never forwards a renderer-supplied URL', async () => {
+  let bridge;
+  const invocations = [];
+  vm.runInNewContext(fs.readFileSync(path.join(__dirname,'../preload.cjs'),'utf8'), {
+    require(name) {
+      assert.equal(name,'electron');
+      return {
+        contextBridge:{exposeInMainWorld(name,value) { assert.equal(name,'whaleDesktop'); bridge=value; }},
+        ipcRenderer:{invoke(...args) { invocations.push(args); return Promise.resolve(true); },send() {}},
+      };
+    },
+  });
+  await bridge.openTopUp('https://example.com');
+  assert.deepEqual(invocations,[['whale:open-top-up']]);
+  assert.equal(TOP_UP_URL,'https://platform.deepseek.com/top_up');
+  assert.equal(new URL(TOP_UP_URL).origin,'https://platform.deepseek.com');
 });
 test('clamps disconnected-monitor positions back into a usable screen', () => {
   const area = { x: 0, y: 0, width: 1366, height: 768 };

@@ -1,10 +1,10 @@
 # 大肥鱼桌宠 · DeepSeek Harness
 
-陪你工作的鲸鱼娘桌面伙伴，支持 **拖动、喂食、摸头、任务状态反馈**，并可在 **四种形象** 之间自由切换。
+陪你工作的鲸鱼娘桌面伙伴，支持 **拖动、喂食、摸头、任务状态反馈、余额与用量统计**，并可在 **四种形象** 之间自由切换。
 
-**[下载 Windows 完整包](https://github.com/DawnVerge/dsh-whale/releases/download/v0.2.0/fatfish-desktop-windows-x64.zip)** · **[v0.2.0 发布说明](https://github.com/DawnVerge/dsh-whale/releases/tag/v0.2.0)** · **[反馈问题](https://github.com/DawnVerge/dsh-whale/issues)**
+**[下载 Windows 完整包](https://github.com/DawnVerge/dsh-whale/releases/download/v0.3.0/fatfish-desktop-windows-x64.zip)** · **[v0.3.0 发布说明](https://github.com/DawnVerge/dsh-whale/releases/tag/v0.3.0)** · **[反馈问题](https://github.com/DawnVerge/dsh-whale/issues)**
 
-本地动画，不需要 API Key，也不会额外调用模型。
+本地动画不会额外调用模型。余额查询使用 DSH 中已配置的 DeepSeek 官方 API Key 或已登录账户，无需在桌宠中再次输入密钥。
 
 ## 四种形象
 
@@ -13,7 +13,7 @@
 | <img src="https://raw.githubusercontent.com/DawnVerge/dsh-whale/f49bb293105f3e6781bf43b010b81ebeeb1408f6/artifacts/appearances-preview/chibi.png" alt="动画大肥鱼桌面效果" width="160"> | <img src="https://raw.githubusercontent.com/DawnVerge/dsh-whale/f49bb293105f3e6781bf43b010b81ebeeb1408f6/artifacts/appearances-preview/maid-short.png" alt="短裙女仆桌面效果" width="160"> | <img src="https://raw.githubusercontent.com/DawnVerge/dsh-whale/f49bb293105f3e6781bf43b010b81ebeeb1408f6/artifacts/appearances-preview/maid-long.png" alt="长裙女仆桌面效果" width="160"> | <img src="https://raw.githubusercontent.com/DawnVerge/dsh-whale/f49bb293105f3e6781bf43b010b81ebeeb1408f6/artifacts/appearances-preview/evening.png" alt="黑金礼服桌面效果" width="160"> |
 | 多帧角色动画 | 透明立绘与动作特效 | 透明立绘与动作特效 | 透明立绘与动作特效 |
 
-点击互动栏的 **··· → 切换形象**，再点击对应缩略图。选择立即生效，重新打开后自动恢复；独立桌宠与 DSH 内浮窗各自记住选择。
+点击互动栏的 **··· → 形象**，再点击对应缩略图。选择立即生效，重新打开后自动恢复；独立桌宠与 DSH 内浮窗各自记住选择。
 
 所有形象均支持拖动、喂食、摸头和任务状态反馈。新增三套通过呼吸、摇摆、跳跃、饭碗与爱心特效回应互动；图片加载失败时会提示并切回动画大肥鱼。
 
@@ -30,16 +30,16 @@
 
 ### 首次安装
 
-1. 下载 [fatfish-desktop-windows-x64.zip](https://github.com/DawnVerge/dsh-whale/releases/download/v0.2.0/fatfish-desktop-windows-x64.zip) 并解压，保留整个文件夹。
+1. 下载 [fatfish-desktop-windows-x64.zip](https://github.com/DawnVerge/dsh-whale/releases/download/v0.3.0/fatfish-desktop-windows-x64.zip) 并解压，保留整个文件夹。
 2. 打开 **DeepSeek Harness 桌面客户端 → 设置 → 插件 → 添加插件**。
-3. 在 **「包名或地址」** 中粘贴解压文件夹内 `dsh-whale-companion-0.2.0.tgz` 的完整路径。
+3. 在 **「包名或地址」** 中粘贴解压文件夹内 `dsh-whale-companion-0.3.0.tgz` 的完整路径。
 4. 安装后点击 **立即启用**。如客户端提示需要重启，退出并重新打开 DSH。
 5. 双击同一文件夹内的 **WhaleCompanion.exe**。
 
 完整路径示例，按实际解压位置替换：
 
 ```text
-D:\桌宠\FatWhaleCompanion-v0.2.0-win32-x64\dsh-whale-companion-0.2.0.tgz
+D:\桌宠\FatWhaleCompanion-v0.3.0-win32-x64\dsh-whale-companion-0.3.0.tgz
 ```
 
 桌宠会出现在 Windows 桌面的右下角，保持透明、置顶；DSH 最小化后也能看见。客户端内同时提供悬浮版本，独立桌宠运行时自动隐藏客户端内的角色。启动后自动发现 DSH 动态端口，无需手填端口。
@@ -59,9 +59,9 @@ D:\桌宠\FatWhaleCompanion-v0.2.0-win32-x64\dsh-whale-companion-0.2.0.tgz
 
 | 文件 | 用途 |
 | --- | --- |
-| [fatfish-desktop-windows-x64.zip](https://github.com/DawnVerge/dsh-whale/releases/download/v0.2.0/fatfish-desktop-windows-x64.zip) | Windows 完整桌宠，包含运行环境和 DSH 插件包 |
-| [dsh-whale-companion-0.2.0.tgz](https://github.com/DawnVerge/dsh-whale/releases/download/v0.2.0/dsh-whale-companion-0.2.0.tgz) | 单独安装 DSH 插件，使用客户端内浮窗 |
-| [SHA256SUMS.txt](https://github.com/DawnVerge/dsh-whale/releases/download/v0.2.0/SHA256SUMS.txt) | 核对下载文件的 SHA256 |
+| [fatfish-desktop-windows-x64.zip](https://github.com/DawnVerge/dsh-whale/releases/download/v0.3.0/fatfish-desktop-windows-x64.zip) | Windows 完整桌宠，包含运行环境和 DSH 插件包 |
+| [dsh-whale-companion-0.3.0.tgz](https://github.com/DawnVerge/dsh-whale/releases/download/v0.3.0/dsh-whale-companion-0.3.0.tgz) | 单独安装 DSH 插件，使用客户端内浮窗 |
+| [SHA256SUMS.txt](https://github.com/DawnVerge/dsh-whale/releases/download/v0.3.0/SHA256SUMS.txt) | 核对下载文件的 SHA256 |
 
 ## 怎么玩
 
@@ -77,6 +77,29 @@ D:\桌宠\FatWhaleCompanion-v0.2.0-win32-x64\dsh-whale-companion-0.2.0.tgz
 | 任务失败 | 失败反馈与提示 |
 | 等待审批 | 等待提示；在 DSH 中处理审批 |
 
+## 余额、用量与充值
+
+点击互动栏 **··· → 余额与用量**，可查看：
+
+| 内容 | 显示方式 |
+| --- | --- |
+| 当前余额 | 官方余额，支持人民币、美元；保留更新时间 |
+| 今日金额和 Token | 按本机日期累计当前 DSH 记录的模型用量 |
+| 最近任务 | 本次金额、输入/输出 Token，以及结束后查询到的余额 |
+| 任务结束提示 | 每次任务结束后自动弹出结算气泡；同时完成的任务依次显示 |
+| 刷新余额 | 手动刷新；启动时、任务结束后及每分钟自动刷新 |
+| 官方充值 | 点击“充值”在系统浏览器打开 [DeepSeek 官方充值页面](https://platform.deepseek.com/top_up) |
+
+**金额为估算，官方账单为准。** 今日用量从插件启用后收到的 DSH 用量事件开始记录，包含多步任务、上下文压缩请求和有用量的失败重试；未报告用量的失败尝试会标为不完整。不会导入账户全站历史，也不包含其他客户端或未报告用量的搜索请求。余额是查询时的账户余额，可能包含其他设备同时发生的消费或充值，不能用余额差额推算单次任务费用。
+
+已核对 2026-10-09 的 [官方价格](https://api-docs.deepseek.com/zh-cn/quick_start/pricing/)，支持 `deepseek-flash`（及官方 Flash 别名）和 `deepseek-v4-pro`，区分缓存命中、高峰与空闲时段。估算仅覆盖已核对的价格日期范围（2026-09-10 至 2026-12-31）；未识别模型、第三方接口或缺失用量时显示“暂不可用”，已知部分标明“未完整”，不会按免费处理。
+
+余额跟随 DSH 当前默认模型的官方账户，支持 API Key 和桌面登录账户。API Key 由 DSH 凭据服务按需读取，仅用于主机侧固定的 [官方余额接口](https://api-docs.deepseek.com/zh-cn/api/get-user-balance/)，不会发送到桌宠页面、写入用量记录或日志。刷新失败会保留上次成功余额并标出错误及时间；切换账户后需刷新。
+
+<img src="artifacts/billing-preview/source-ready.png" alt="余额与用量菜单，使用模拟余额展示" width="260"> <img src="artifacts/billing-preview/source-task-summary.png" alt="任务结束后的估算费用与余额气泡" width="260">
+
+上图使用模拟余额与任务用量演示。
+
 ## 常见问题
 
 **装了插件，桌面上却没有角色？**
@@ -85,7 +108,7 @@ D:\桌宠\FatWhaleCompanion-v0.2.0-win32-x64\dsh-whale-companion-0.2.0.tgz
 
 **更新后仍然只有原来的大肥鱼？**
 
-退出旧版桌宠，确认安装的是 v0.2.0 插件，再从新版解压文件夹启动程序。点击互动栏的 **···** 查看四种形象。
+退出旧版桌宠，确认安装的是 v0.3.0 插件，再从新版解压文件夹启动程序。点击互动栏的 **···** 查看四种形象。
 
 **EXE 提示缺少 DLL，或者立绘无法加载？**
 
@@ -176,6 +199,7 @@ Electron 默认打包产物在 `dist/FatWhaleCompanion-win32-x64/`，需要保�
 | 数据 | 保存位置 |
 | --- | --- |
 | 喂食和摸头计数 | `<DSH_HOME>/data/dsh-whale-companion/state.json` |
+| 用量记录和最近任务结算 | 同目录的 `billing.json`（不含 API Key） |
 | DSH 端口发现记录 | 同目录的 `connection.json` |
 | 独立桌宠位置 | Electron 用户数据目录中的 `position.json` |
 | 当前形象 | 当前客户端的本地存储 |
@@ -184,7 +208,7 @@ Electron 默认打包产物在 `dist/FatWhaleCompanion-win32-x64/`，需要保�
 
 ## 验证范围
 
-v0.2.0 已通过 **13 项插件自动测试、5 项桌面配置测试、真实 Cordis 加载检查，以及源码版和 Windows 便携版 Electron 交互检查**。
+v0.3.0 已通过 **65 项插件、用量与余额自动测试，7 项桌面配置测试，真实 Cordis 4.0.2/4.0.4 加载检查，以及源码版和 Windows 便携版 Electron 交互检查**。余额与任务费用测试使用模拟响应，没有调用真实模型、查询真实余额或执行充值。
 
 依据本机 DSH Desktop **0.2.0-rc.2** 的源码确认插件接口，任务联动使用模拟宿主事件验证。没有改动现有 DSH 配置，尚未在用户当前会话中执行端到端任务测试。其他版本需要核对其插件接口。
 

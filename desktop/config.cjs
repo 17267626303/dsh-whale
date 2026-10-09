@@ -3,6 +3,7 @@
 const fs = require('node:fs');
 const path = require('node:path');
 const os = require('node:os');
+const TOP_UP_URL = 'https://platform.deepseek.com/top_up';
 
 function argumentsFrom(argv) {
   const result = {};
@@ -53,6 +54,10 @@ function validateRequest(route, body) {
   if (typeof route !== 'string') throw new Error('Invalid pet route');
   route = route.replace(/^\/whale-companion(?=\/)/, '');
   if (route === '/state' && body === undefined) return { route, method: 'GET' };
+  if (route === '/billing/state' && body === undefined) return { route, method: 'GET' };
+  if (route === '/billing/refresh' && body && typeof body === 'object' && [Object.prototype,null].includes(Object.getPrototypeOf(body)) && Reflect.ownKeys(body).length === 0) {
+    return { route, method: 'POST', body: {} };
+  }
   if (route === '/interact' && body && ['feed', 'pet'].includes(body.action) && Object.keys(body).every(key => key === 'action')) {
     return { route, method: 'POST', body: { action: body.action } };
   }
@@ -73,4 +78,4 @@ function clampBounds(bounds, workArea) {
   };
 }
 
-module.exports = { argumentsFrom, loopbackOrigin, discoveryFiles, serverOrigin, validateRequest, clampBounds };
+module.exports = { argumentsFrom, loopbackOrigin, discoveryFiles, serverOrigin, validateRequest, clampBounds, TOP_UP_URL };
